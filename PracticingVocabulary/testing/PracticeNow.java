@@ -8,9 +8,10 @@ package testing;
 import java.awt.*;// we need this one for Components
 import java.awt.event.*;// we need this one for ActionListener
 import javax.swing.*;// we need this one for components
-import java.util.*;
 
 public class PracticeNow extends JFrame{
+	
+	private TestMe myTest;
 	//gui1
 	private JLabel enterVListL;
 	private JButton enterB;
@@ -25,19 +26,10 @@ public class PracticeNow extends JFrame{
 	private JButton checkB;
 	private JButton testB;
 	private JButton resetB;
-	//	private JButton viewB;
-	private JTextArea viewTA;
-	private JScrollPane viewSP;
 	private JLabel errorL;
 	private JTextField errorTF;
 
 	private Container myCP;
-
-	private static int myCount=0;
-	//	private ArrayList<String> myWords = new ArrayList<String>();
-	private ArrayList<String> myDefinitionsList = new ArrayList<String>();
-	//<def key, word value>
-	private HashMap<String, String> vocabMap = new HashMap();
 
 	public  PracticeNow() {
 		super ("Practicing Vocabulary Is Fun They Said");
@@ -47,12 +39,13 @@ public class PracticeNow extends JFrame{
 		myCP.setLayout(null);
 		myCP.setBackground(new Color (216,191,216));
 		Font font1 = new Font(null, Font.ITALIC, 20);
-
-		vocabMap.put("one of the first public-key\\ncryptosystems and is widely used\\nfor secure data transmission.", "RSA");
-		vocabMap.put("is a systematic investment manager,\nfounded with the goal of applying\\ncutting-edge technology to the\\nda"
+		
+		myTest = new TestMe();
+		myTest.addToDict("one of the first public-key\\ncryptosystems and is widely used\\nfor secure data transmission.", "RSA");
+		myTest.addToDict("is a systematic investment manager,\nfounded with the goal of applying\\ncutting-edge technology to the\\nda"
 				+ "tarich world of finance", "Two Sigma");
-		vocabMap.put("the largest e-commerce\nmarketplace and cloud \ncomputing platform in the world", "Amazon");
-		vocabMap.put("A better way to design. Design,\nprototype, and gather feedback all\nin one place with","Figma");
+		myTest.addToDict("the largest e-commerce\nmarketplace and cloud \ncomputing platform in the world", "Amazon");
+		myTest.addToDict("A better way to design. Design,\nprototype, and gather feedback all\nin one place with","Figma");
 
 		//gui1
 		enterVListL = UtilityMethods.makeLabel(50, 100, 170, 35, "Enter Vocab List", myCP);
@@ -182,21 +175,20 @@ public class PracticeNow extends JFrame{
 	}//loadBHandler
 
 	public void AddBHandler() {
-		String vocab = wordTF.getText();
-		String expl = defTA.getText();
-		if(vocab.equals("")&& expl.equals("")){
+		String word = wordTF.getText();
+		String definition = defTA.getText();
+		
+		if(word.equals("")&& definition.equals("")){
 			errorL.setForeground(Color.red);
 			errorTF.setText("Hello Mate. Please a provide word and definition");
-		}else if (!vocab.equals("") && expl.equals("")){
+		}else if (!word.equals("") && definition.equals("")){
 			errorL.setForeground(Color.red);//red label
 			errorTF.setText("Hiya Buddy. Please define:: "+ wordTF.getText());//no def entered
-		}else if(vocab.equals("") && !expl.equals("")){
+		}else if(word.equals("") && !definition.equals("")){
 			errorL.setForeground(Color.red);//red label
 			errorTF.setText("Howdy Pal. Please give a vocabulary word ");//no def entered
 		}else { 
-			myDefinitionsList.add(expl);
-			vocabMap.put(expl,vocab);
-
+			myTest.addToDict(definition, word);
 			wordTF.setText("");
 			defTA.setText("");
 			errorL.setForeground(Color.black);
@@ -205,32 +197,18 @@ public class PracticeNow extends JFrame{
 		}//else
 	}//addBHandler
 
-	// Function select an element base on index  
-	// and return an element 
-
-	//
-	private String getRandomDef()
-	{
-		Random random = new Random();
-		int listSize = myDefinitionsList.size();
-		int randomIndex = random.nextInt(listSize);
-		return myDefinitionsList.get(randomIndex);
-	}
-
 	public void StartBHandler() {
 		wordTF.setEditable(true);
 		errorTF.setText("Enter the word that matches the definition");
 		checkB.setEnabled(true);
-
-		defTA.setText(getRandomDef());
-
+		defTA.setText(myTest.getRandomDef());
 		testB.setEnabled(false);
 	}//StartBHandler
 
 	public void CheckBHandler() {
 
 		String userGuess = wordTF.getText();
-		String givenDef = defTA.getText();
+		String randomDef = defTA.getText();
 
 		if(userGuess.equals("")){
 			errorTF.setText("You have to actually enter a word to study silly");			
@@ -240,7 +218,7 @@ public class PracticeNow extends JFrame{
 			errorL.setForeground(Color.black);
 			errorTF.setForeground(Color.black);
 
-			if((vocabMap.get(givenDef).equals(userGuess))) {
+			if(myTest.isGuessCorrect(randomDef, userGuess)) {
 
 				errorTF.setText("You are correct. Press \"TEST\"");	
 				checkB.setEnabled(false);
