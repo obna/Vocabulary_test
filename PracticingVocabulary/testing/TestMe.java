@@ -21,8 +21,7 @@ public class TestMe {
 	public String getRandomDef()
 	{
 		Random random = new Random();
-		int listSize = myDefList.size();
-		int randomIndex = random.nextInt(listSize);
+		int randomIndex = random.nextInt(myDefList.size());
 		return myDefList.get(randomIndex);
 	}
 	public boolean isGuessCorrect(String givenDef, String userGuess) {
