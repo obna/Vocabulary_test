@@ -41,8 +41,8 @@ public class PracticeNow extends JFrame{
 		Font font1 = new Font(null, Font.ITALIC, 20);
 		
 		myTest = new TestMe();
-		myTest.addToDict("one of the first public-key\\ncryptosystems and is widely used\\nfor secure data transmission.", "RSA");
-		myTest.addToDict("is a systematic investment manager,\nfounded with the goal of applying\\ncutting-edge technology to the\\nda"
+		myTest.addToDict("one of the first public-key\ncryptosystems and is widely used\nfor secure data transmission.", "RSA");
+		myTest.addToDict("is a systematic investment manager,\nfounded with the goal of applying\ncutting-edge technology to the\\nda"
 				+ "tarich world of finance", "Two Sigma");
 		myTest.addToDict("the largest e-commerce\nmarketplace and cloud \ncomputing platform in the world", "Amazon");
 		myTest.addToDict("A better way to design. Design,\nprototype, and gather feedback all\nin one place with","Figma");
@@ -65,7 +65,7 @@ public class PracticeNow extends JFrame{
 		defL.setVisible(false);
 		defTA = UtilityMethods.makeTextArea(150, 150, 250, 105, "", Color.black, myCP);
 		defTA.setVisible(false);
-		addB = UtilityMethods.makeButton(403, 220, 40, 35, "ADD", Color.black, (e -> AddBHandler()), myCP);
+		addB = UtilityMethods.makeButton(403, 220, 40, 35, "ADD", Color.black, (e -> addBHandler()), myCP);
 		addB.setVisible(false);
 		errorL = UtilityMethods.makeLabel(50, 470, 100, 35, "ERROR::" , myCP);
 		errorL.setFont(font1);
@@ -77,7 +77,7 @@ public class PracticeNow extends JFrame{
 		checkB = UtilityMethods.makeButton(403, 220, 55, 35, "CHECK", Color.black, (e -> CheckBHandler()), myCP);
 		checkB.setVisible(false);
 		checkB.setEnabled(false);
-		testB = UtilityMethods.makeButton(260, 60, 55, 35, "TEST", Color.black, (e -> StartBHandler()), myCP);
+		testB = UtilityMethods.makeButton(260, 60, 55, 35, "TEST", Color.black, (e -> testBHandler()), myCP);
 		testB.setVisible(false);
 		resetB = UtilityMethods.makeButton(10, 10, 165, 35, "<< From the beginning", Color.MAGENTA, (e -> ResetBHandler()), myCP);
 		resetB.setEnabled(false);
@@ -172,9 +172,10 @@ public class PracticeNow extends JFrame{
 		practiceGui(); 
 		testB.setEnabled(true);
 		wordTF.setEditable(false);
+		defTA.setText(myTest.printKeys());
 	}//loadBHandler
 
-	public void AddBHandler() {
+	public void addBHandler() {
 		String word = wordTF.getText();
 		String definition = defTA.getText();
 		
@@ -197,7 +198,7 @@ public class PracticeNow extends JFrame{
 		}//else
 	}//addBHandler
 
-	public void StartBHandler() {
+	public void testBHandler() {
 		wordTF.setEditable(true);
 		errorTF.setText("Enter the word that matches the definition");
 		checkB.setEnabled(true);

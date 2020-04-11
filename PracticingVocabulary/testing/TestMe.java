@@ -10,14 +10,14 @@ public class TestMe {
 	private HashMap<String, String> vocabMap = new HashMap<String, String>();
 
 	public TestMe() {
-		
+
 	}
-	
+
 	public void addToDict(String definition, String word) {
 		vocabMap.put(definition, word);
 		myDefList.add(definition);
 	}
-	
+
 	public String getRandomDef()
 	{
 		Random random = new Random();
@@ -29,6 +29,13 @@ public class TestMe {
 			return true;
 		}
 		return false;
+	}
+
+	public String printKeys() {
+		for (String key : vocabMap.keySet()) {
+			System.out.println(key);
+		}
+		return null;
 	}
 
 }//TestMe
